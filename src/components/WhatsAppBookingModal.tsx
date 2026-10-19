@@ -205,7 +205,19 @@ export const WhatsAppBookingModal: React.FC<WhatsAppBookingModalProps> = ({
             href={whatsappUrl}
             target="_blank"
             rel="noopener noreferrer"
-            onClick={() => setSubmitted(true)}
+            onClick={() => {
+              setSubmitted(true);
+              fetch('/api/leads', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  name: patientName,
+                  phone: patientPhone,
+                  treatment: treatmentObj.title,
+                  period: preferredPeriod,
+                }),
+              }).catch(() => {});
+            }}
             className="w-full sm:flex-1 py-4 px-6 rounded-full bg-[#101010] hover:bg-[#FF791A] hover:text-[#101010] text-white font-bold text-sm flex items-center justify-center gap-2.5 transition-all duration-200 shadow-lg cursor-pointer whitespace-nowrap shrink-0"
           >
             <span>Iniciar Conversa no WhatsApp</span>
